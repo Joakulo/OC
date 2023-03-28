@@ -1,0 +1,34 @@
+ORG 1000H
+TAB1 DW 1, 12, 5, 10 ; Los num de tabla 1 parte baja y seguido parte alta 
+     DW 25, 48, 12, 25 
+     DW 51, 20, 1, 4 
+TAB2 DW 4, 26, 25, 42 ; Los num de tabla 2 parte baja y parte alta
+     DW 23, 7, 2, 56
+     DW 14, 3, 14, 74
+TAB3 DW 0,0,0,0,0,0,0,0,0,0,0,0 ; en TAB3 se guarda la suma de TAB1 y TAB2, con DUP dejamos 12 lugares
+CANT DB 12
+DIR3 DW ?
+
+ 
+ORG 2000H 
+MOV AX, OFFSET TAB1     ;AX contiene la direccion de la TABLA1
+MOV CX, OFFSET TAB2     ;CX contiene la direccion de la TABLA2
+MOV DIR3, OFFSET TAB3   ;DX contiene la direccion de la TABLA3
+
+LAZO: MOV BX, AX   	;BX contiene la direccion de la TABLA1
+MOV DX, [BX]        	;DX contiene un numero de la TABLA1
+MOV BX, CX          	;BX contiene la direccion de la TABLA2      
+ADD DX, [BX]        	;Se le suma a DX el numero correspondiente de TABLA2
+
+MOV BX, DIR3     	;BX contiene la direccion de la TABLA3
+MOV [BX], DX     	;Se guarda el resultado en la posicion de TABLA3
+
+ADD AX, 2    		;Se aumenta en 2 AX, para leer el siguiente numero de TABLA1
+ADD CX, 2    		;Se aumenta en 2 CX, para leer el siguiente numero de TABLA2
+ADD DIR3, 2  		;Se aumenta en 2 DIR3, para usar el proximo espacio para guardar resultados
+
+DEC CANT     		;Controla la cantidad de veces que se repite el lazo
+JNZ LAZO
+
+ HLT 
+END

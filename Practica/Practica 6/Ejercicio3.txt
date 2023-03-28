@@ -1,0 +1,55 @@
+1) Ambos programas realizan un producto, NUM1 x NUM2.
+
+2) El resultado queda almacenado en DX
+
+3)
+ORG 1000h
+ NUM1 DB 5h
+ NUM2 DB 3h
+
+ORG 2000H 
+ MOV AL, NUM1
+ CMP AL, 0
+ JZ FIN
+ MOV AH, 0
+ MOV DX, 0
+ MOV CL, NUM2
+ LOOP: CMP CL,0
+ JZ FIN
+ ADD DX, AX
+ DEC CL
+ JMP LOOP
+ FIN: HLT 
+END
+
+Lo realiza en 24 pasos
+
+
+
+ORG 1000h
+ NUM1 DB 5h
+ NUM2 DB 3h
+
+ORG 3000H
+ SUB1: CMP AL, 0
+ JZ FIN
+ CMP CL,0
+ JZ FIN
+ MOV AH, 0
+ MOV DX, 0
+LAZO: ADD DX, AX
+ DEC CX
+ JNZ LAZO
+FIN: RET
+ 
+ORG 2000H 
+ MOV AL, NUM1
+ MOV CL, NUM2
+ CALL SUB1
+ HLT 
+END
+
+Lo realiza en 20 pasos
+
+
+4) El tiempo depende de NUM2, ya que esta es la cantidad de veces que se suma (multiplica) el primero.
